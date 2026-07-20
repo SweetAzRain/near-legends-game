@@ -32,7 +32,7 @@ export const ALL_CARDS = [
     id: 'ns_001', name: 'Illia Polosukhin', faction: 'nightshade', type: 'hero',
     rarity: 'legendary', cost: 10, attack: 6, health: 8, maxHealth: 8,
     art: '👤', keywords: [],
-    effect: 'Пассивка: Attention Mechanism — смотрите верхние 3 карты колоды в начале хода. Активная: все существа +3/+3 и атакуют всех врагов.',
+    effect: 'Пассивка: Attention Mechanism — смотрите верхние 3 карты колоды в начале хода. Активная: все существа +3/+3 и ата[...]',
     passive: { type: 'scry', amount: 3 },
     active: { cost: 10, type: 'buff_all', attack: 3, health: 3, cleave: true }
   },
@@ -487,7 +487,7 @@ export const ALL_CARDS = [
     id: 'ht_002', name: 'Pasha', faction: 'hot', type: 'hero',
     rarity: 'epic', cost: 8, attack: 5, health: 6, maxHealth: 6,
     art: '⚡', keywords: [],
-    effect: 'Пассивка: при разыгрывании артефакта — лечение 2 всем существам. Активная: все существа +2/+2 (+1/+1 если есть артефакт).',
+    effect: 'Пассивка: при разыгрывании артефакта — лечение 2 всем существам. Активная: все существа +2/+2 (+1/+1 если[...]',
     passive: { type: 'artifact_heal', amount: 2 },
     active: { cost: 6, type: 'buff_all', attack: 2, health: 2, artifactBonus: { attack: 1, health: 1 } }
   },
@@ -511,7 +511,7 @@ export const ALL_CARDS = [
     id: 'ht_005', name: 'HERE Wallet', faction: 'hot', type: 'artifact',
     rarity: 'epic', cost: 5, attack: 0, health: 5, maxHealth: 5,
     art: '👛', keywords: [],
-    effect: 'Смотрите верхнюю карту колоды врага. Если заклинание — заставьте разыграть на себя. Seedless Recovery: при уничтожении — +5 здоровья, 2 карты.',
+    effect: 'Смотрите верхнюю карту колоды врага. Если заклинание — заставьте разыграть на себя. Seedless Recovery: при [...]',
     onTurnStart: { type: 'spy_top_card', forcePlay: true },
     onDestroy: { type: 'heal_and_draw', health: 5, cards: 2 }
   },
@@ -519,7 +519,7 @@ export const ALL_CARDS = [
     id: 'ht_006', name: 'HOT Omni Token', faction: 'hot', type: 'spell',
     rarity: 'rare', cost: 3, attack: 0, health: 0,
     art: '🪙', keywords: ['cross_chain'],
-    effect: 'Создайте 2 HOT Token'а. Или: уничтожьте 1 HOT Token, нанесите 3 урона. Cross-chain — без конвертации маны.',
+    effect: 'Создайте 2 HOT Token\'a. Или: уничтожьте 1 HOT Token, нанесите 3 урона. Cross-chain — без конвертации маны.',
     onPlay: { type: 'choose', options: [
       { type: 'generate_token', token: 'HOT', amount: 2 },
       { type: 'damage', consumeToken: 'HOT', damage: 3 }
@@ -565,7 +565,7 @@ export const ALL_CARDS = [
     id: 'ht_012', name: 'HOT DAO Governance', faction: 'hot', type: 'spell',
     rarity: 'legendary', cost: 7, attack: 0, health: 0,
     art: '🏛️', keywords: [],
-    effect: 'Выберите одно: (1) Все HOT Token'ы наносят 2 урона, (2) TEE-защита на 2 хода, (3) Возьмите 3 карты.',
+    effect: 'Выберите одно: (1) Все HOT Token\'y наносят 2 урона, (2) TEE-защита на 2 хода, (3) Возьмите 3 карты.',
     onPlay: { type: 'choose', options: [
       { type: 'token_damage', token: 'HOT', damage: 2 },
       { type: 'global_tee', duration: 2 },
@@ -578,7 +578,7 @@ export const ALL_CARDS = [
     id: 'it_001', name: 'Slime', faction: 'intear', type: 'hero',
     rarity: 'epic', cost: 7, attack: 4, health: 7, maxHealth: 7,
     art: '🦠', keywords: [],
-    effect: 'Пассивка: UX Alchemist — заклинания на 1 дешевле. 0-мана карты = +1 карта. Активная: полный редроу с дискаунтом.',
+    effect: 'Пассивка: UX Alchemist — заклинания на 1 дешевле. 0-мана карты = +1 карта. Активная: полный редроу с дискаунт[...]',
     passive: { type: 'spell_discount', amount: 1, zeroBonus: 'draw' },
     active: { cost: 5, type: 'redraw', bonus: 1, discount: 1 }
   },
@@ -667,7 +667,7 @@ export const ALL_CARDS = [
     id: 'lg_001', name: 'Legion Commander', faction: 'legion', type: 'hero',
     rarity: 'legendary', cost: 9, attack: 5, health: 7, maxHealth: 7,
     art: '👑', keywords: [],
-    effect: 'Пассивка: Rally the Troops — призыв 1/1 Recruit если <3 существ. Активная: все атакуют немедленно, убийство = карта.',
+    effect: 'Пассивка: Rally the Troops — призыв 1/1 Recruit если <3 существ. Активная: все атакуют немедленно, убийство = карт[...]',
     passive: { type: 'auto_summon', condition: 'creature_count', threshold: 3, summon: { name: 'NEAR Recruit', attack: 1, health: 1 } },
     active: { cost: 7, type: 'mass_attack', drawPerKill: 1 }
   },
@@ -683,7 +683,7 @@ export const ALL_CARDS = [
     id: 'lg_003', name: 'Legion Banner', faction: 'legion', type: 'artifact',
     rarity: 'epic', cost: 6, attack: 0, health: 6, maxHealth: 6,
     art: '🚩', keywords: [],
-    effect: 'Все существа на 1 дешевле. Legionnaire'ы +1/+1. Community Power: 5+ существ = Double Attack.',
+    effect: 'Все существа на 1 дешевле. Legionnaire\'y +1/+1. Community Power: 5+ существ = Double Attack.',
     passive: { type: 'global_discount', amount: 1, target: 'creature' },
     onTurnStart: { type: 'conditional_keyword', condition: 'creature_count', threshold: 5, keyword: 'double_attack' }
   },
@@ -726,7 +726,7 @@ export const ALL_CARDS = [
     id: 'lg_009', name: 'Legion Camp', faction: 'legion', type: 'artifact',
     rarity: 'rare', cost: 4, attack: 0, health: 4, maxHealth: 4,
     art: '⛺', keywords: [],
-    effect: 'В конце хода — если <3 существ, призовите 1/1 Recruit. Legionnaire'ы на 1 дешевле.',
+    effect: 'В конце хода — если <3 существ, призовите 1/1 Recruit. Legionnaire\'y на 1 дешевле.',
     onTurnEnd: { type: 'auto_summon', condition: 'creature_count', threshold: 3, summon: { name: 'NEAR Recruit', attack: 1, health: 1 } },
     passive: { type: 'specific_discount', target: 'NEAR Legionnaire', amount: 1 }
   },
