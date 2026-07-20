@@ -1,0 +1,17 @@
+{
+  "name": "near-legends",
+  "version": "1.0.0",
+  "description": "Карточная игра экосистемы NEAR Protocol",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "wrangler pages deploy dist"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {}
+}

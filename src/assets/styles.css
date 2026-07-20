@@ -1,0 +1,643 @@
+/* ===== NEAR LEGENDS — Глобальные стили ===== */
+:root {
+  /* Фракции */
+  --nightshade: #a855f7;
+  --ironclaw: #ef4444;
+  --intents: #06b6d4;
+  --stake: #f59e0b;
+  --aurora: #10b981;
+  --hot: #f97316;
+  --intear: #ec4899;
+  --legion: #6366f1;
+
+  /* Общие */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --border: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --accent: #a855f7;
+  --mana: #3b82f6;
+  --health: #ef4444;
+  --attack: #f59e0b;
+
+  /* Редкости */
+  --legendary: #fbbf24;
+  --epic: #a855f7;
+  --rare: #3b82f6;
+  --common: #94a3b8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Анимации ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px var(--accent); }
+  50% { box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: var(--border); }
+  50% { border-color: var(--accent); }
+}
+
+.animate-fade { animation: fadeIn 0.5s ease; }
+.animate-glow { animation: glow 2s infinite; }
+.animate-shake { animation: shake 0.3s ease; }
+.animate-float { animation: float 3s ease infinite; }
+
+/* ===== Игровое поле ===== */
+.game-board {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  padding: 10px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ===== Герои ===== */
+.hero-zone {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, #0f172a 100%);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.hero-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  border: 3px solid;
+  position: relative;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.hero-health-bar {
+  width: 200px;
+  height: 12px;
+  background: #334155;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.hero-health-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ef4444, #f87171);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.hero-mana {
+  display: flex;
+  gap: 4px;
+}
+
+.mana-crystal {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+.mana-crystal.spent {
+  background: #334155;
+  box-shadow: none;
+}
+
+/* ===== Поле боя ===== */
+.battlefield {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  position: relative;
+}
+
+.battlefield::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.battlefield-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  min-height: 160px;
+}
+
+.battlefield-row.enemy { border-bottom: 1px dashed var(--border); }
+
+/* ===== Карты ===== */
+.card {
+  width: 140px;
+  height: 200px;
+  background: linear-gradient(135deg, var(--bg-card) 0%, #0f172a 100%);
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  user-select: none;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+.card.playable {
+  border-color: var(--accent);
+  animation: pulse-border 1.5s infinite;
+}
+
+.card.selected {
+  border-color: #fbbf24;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+}
+
+.card.attacking {
+  animation: shake 0.3s ease;
+}
+
+/* Редкости */
+.card.legendary { border-color: var(--legendary); }
+.card.epic { border-color: var(--epic); }
+.card.rare { border-color: var(--rare); }
+.card.common { border-color: var(--common); }
+
+/* Фракции */
+.card.nightshade { --faction-color: var(--nightshade); }
+.card.ironclaw { --faction-color: var(--ironclaw); }
+.card.intents { --faction-color: var(--intents); }
+.card.stake { --faction-color: var(--stake); }
+.card.aurora { --faction-color: var(--aurora); }
+.card.hot { --faction-color: var(--hot); }
+.card.intear { --faction-color: var(--intear); }
+.card.legion { --faction-color: var(--legion); }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.card-cost {
+  width: 28px;
+  height: 28px;
+  background: var(--mana);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+}
+
+.card-rarity {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.1);
+}
+
+.card-art {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(15, 23, 42, 0.8));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  margin-bottom: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, var(--bg-card) 100%);
+}
+
+.card-name {
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-type {
+  font-size: 9px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.card-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-attack {
+  width: 28px;
+  height: 28px;
+  background: var(--attack);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.card-health {
+  width: 28px;
+  height: 28px;
+  background: var(--health);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.card-faction {
+  font-size: 16px;
+}
+
+/* ===== Рука ===== */
+.hand-zone {
+  display: flex;
+  justify-content: center;
+  gap: -20px;
+  padding: 20px;
+  min-height: 220px;
+  align-items: flex-end;
+  perspective: 1000px;
+}
+
+.hand-zone .card {
+  margin-left: -30px;
+  transition: all 0.3s ease;
+}
+
+.hand-zone .card:first-child { margin-left: 0; }
+
+.hand-zone .card:hover {
+  margin-left: 0;
+  margin-right: 30px;
+  z-index: 100;
+}
+
+/* ===== UI Элементы ===== */
+.btn {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  border-color: var(--accent);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: #ef4444;
+}
+
+/* ===== Модальные окна ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* ===== Экраны ===== */
+.screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+.screen.active { display: flex; }
+
+.title-screen {
+  text-align: center;
+}
+
+.title-screen h1 {
+  font-size: 64px;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #a855f7, #06b6d4, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-screen .subtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+}
+
+.deck-select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  width: 100%;
+}
+
+.deck-card {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.deck-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.deck-card.selected {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, rgba(168,85,247,0.1), transparent);
+}
+
+.deck-icon { font-size: 40px; margin-bottom: 10px; }
+.deck-name { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+.deck-desc { font-size: 12px; color: var(--text-secondary); }
+
+/* ===== Лог боя ===== */
+.battle-log {
+  position: fixed;
+  right: 20px;
+  top: 100px;
+  width: 250px;
+  max-height: 300px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px;
+  overflow-y: auto;
+  font-size: 12px;
+  z-index: 100;
+}
+
+.battle-log-entry {
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: var(--text-secondary);
+}
+
+.battle-log-entry:last-child { border-bottom: none; }
+
+/* ===== Адаптивность ===== */
+@media (max-width: 768px) {
+  .card { width: 100px; height: 150px; }
+  .card-art { font-size: 32px; }
+  .card-name { font-size: 9px; }
+  .hero-avatar { width: 60px; height: 60px; font-size: 30px; }
+  .hero-health-bar { width: 120px; }
+  .battlefield-row { gap: 8px; min-height: 120px; }
+  .hand-zone .card { margin-left: -20px; }
+  .title-screen h1 { font-size: 40px; }
+  .battle-log { display: none; }
+}
+
+/* ===== Тултип ===== */
+.tooltip {
+  position: absolute;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 11px;
+  max-width: 200px;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+/* ===== Эффекты урона/лечения ===== */
+.damage-popup {
+  position: absolute;
+  color: #ef4444;
+  font-size: 24px;
+  font-weight: bold;
+  animation: float 1s ease forwards;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.heal-popup {
+  position: absolute;
+  color: #10b981;
+  font-size: 24px;
+  font-weight: bold;
+  animation: float 1s ease forwards;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* ===== Шарды (Nightshade) ===== */
+.shard-divider {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--nightshade), transparent);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.shard-zone {
+  position: relative;
+  width: 48%;
+  min-height: 100%;
+  border: 1px dashed rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+/* ===== TEE-защита (IronClaw) ===== */
+.tee-shield {
+  position: absolute;
+  inset: -2px;
+  border: 2px solid rgba(239, 68, 68, 0.5);
+  border-radius: 14px;
+  pointer-events: none;
+  animation: glow 2s infinite;
+}
+
+/* ===== Заморозка (Stake) ===== */
+.frozen {
+  filter: brightness(0.7) sepia(0.3) hue-rotate(180deg);
+  position: relative;
+}
+
+.frozen::after {
+  content: '❄️';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  animation: float 2s ease infinite;
+}
+
+/* ===== Stealth ===== */
+.stealth {
+  opacity: 0.6;
+  filter: blur(1px);
+}
+
+/* ===== Таймер хода ===== */
+.turn-timer {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-secondary);
+  border: 2px solid var(--accent);
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 100;
+}
+
+/* ===== Конец хода ===== */
+.end-turn-btn {
+  position: fixed;
+  bottom: 240px;
+  right: 20px;
+  z-index: 100;
+}
