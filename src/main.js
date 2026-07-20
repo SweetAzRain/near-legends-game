@@ -102,7 +102,7 @@ function getFactionDesc(faction) {
     intents: 'Chain Abstraction и кража карт',
     stake: 'Стейкинг и пассивный доход',
     aurora: 'Копирование и EVM-совместимость',
-    hot: 'MPC-ноды и HOT Token'ы',
+    hot: "MPC-ноды и HOT Token'ы",
     intear: 'UX-скидки и быстрые заклинания',
     legion: 'Массовые призывы и фаланга'
   };
@@ -219,7 +219,7 @@ function showRules() {
       <div style="background:#1e293b;border-radius:16px;padding:20px;margin-bottom:15px;">
         <h3 style="color:#a855f7;margin-bottom:10px;">🎯 Цель игры</h3>
         <p style="color:#94a3b8;line-height:1.6;">
-          Снизьте здоровье героя противника до 0. У каждого героя 30 здоровья (для героев из данных — их базовое здоровье).
+          Снизьте здоровье героя противника до 0. У каждого героя 30 здоровья (для героев из данных — их базовое значение).
         </p>
       </div>
 
