@@ -248,7 +248,7 @@ export class GameBoard {
   }
 
   onEnemyCreatureClick(creature) {
-    // Если есть выбранное существо для атаки — атаковать
+    // Если есть выбранное сущест��о для атаки — атаковать
     if (this.selectedFieldCreature) {
       this.attackCreature(this.selectedFieldCreature, creature);
       this.selectedFieldCreature = null;
@@ -277,6 +277,12 @@ export class GameBoard {
 
   playSelectedCard(target = null) {
     if (!this.selectedCard) return;
+
+    // ИСПРАВЛЕНО: валидация instanceId
+    if (!this.selectedCard.instanceId) {
+      console.error('Card has no instanceId:', this.selectedCard);
+      return;
+    }
 
     const success = this.engine.playCard(0, this.selectedCard.instanceId, target);
 
@@ -361,11 +367,20 @@ export class GameBoard {
         </p>
         <div style="display:flex;gap:10px;justify-content:center;">
           <button class="btn btn-primary" onclick="location.reload()">🔄 Новая игра</button>
-          <button class="btn" onclick="window.showDeckSelect()">🏠 В меню</button>
+          <button class="btn" id="btn-menu">🏠 В меню</button>
         </div>
       </div>
     `;
     document.body.appendChild(modal);
+
+    // ИСПРАВЛЕНО: использование addEventListener вместо onclick
+    const menuBtn = modal.querySelector('#btn-menu');
+    if (menuBtn && window.showTitleScreen) {
+      menuBtn.addEventListener('click', () => {
+        modal.remove();
+        window.showTitleScreen();
+      });
+    }
   }
 }
 
