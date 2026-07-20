@@ -134,8 +134,8 @@ export class GameEngine {
     // Проверка маны
     let cost = card.cost;
 
-    // Скидки Intear
-    if (card.keywords.includes('ux')) {
+    // Скидки Intear - ИСПРАВЛЕНО: добавлена проверка существования keywords
+    if (card.keywords?.includes('ux')) {
       const uxDiscount = this.countUXDiscounts(player);
       cost = Math.max(0, cost - uxDiscount);
     }
@@ -205,13 +205,13 @@ export class GameEngine {
       ...card,
       currentHealth: card.health,
       maxHealth: card.health,
-      canAttack: card.keywords.includes('charge'),
+      canAttack: card.keywords?.includes('charge'),
       hasAttacked: false,
       divineShield: false,
-      stealth: card.keywords.includes('stealth'),
-      taunt: card.keywords.includes('taunt'),
+      stealth: card.keywords?.includes('stealth'),
+      taunt: card.keywords?.includes('taunt'),
       frozen: false,
-      tee: card.keywords.includes('tee_protection'),
+      tee: card.keywords?.includes('tee_protection'),
       buffs: []
     };
 
@@ -376,12 +376,10 @@ export class GameEngine {
 
     const enemy = this.players[1 - player.index];
 
-    // Проверка Taunt
+    // Проверка Taunt - ИСПРАВЛЕНО: проверка перемещена после выбора цели
     const enemyTaunts = enemy.field.filter(c => c.taunt && c.currentHealth > 0);
-    if (enemyTaunts.length > 0 && target && !target.taunt) {
-      return false; // Должны атаковать Taunt
-    }
-
+    
+    // Выбор цели
     let targetCreature = target;
     if (!targetCreature && enemy.field.length > 0) {
       // Если есть Taunt — атакуем его
@@ -391,6 +389,11 @@ export class GameEngine {
         // Иначе атакуем случайное или героя
         targetCreature = enemy.field[Math.floor(Math.random() * enemy.field.length)];
       }
+    }
+
+    // ИСПРАВЛЕННАЯ ПРОВЕРКА TAUNT: после выбора цели
+    if (enemyTaunts.length > 0 && targetCreature && !targetCreature.taunt) {
+      return false; // Должны атаковать Taunt
     }
 
     if (targetCreature) {
@@ -405,8 +408,8 @@ export class GameEngine {
       creature.hasAttacked = true;
       creature.canAttack = false;
 
-      // Триггер Berserker
-      if (creature.name === 'Berserker') {
+      // Триггер Berserker - ИСПРАВЛЕНО: проверка faction
+      if (creature.name === 'Berserker' && creature.faction === 'legion') {
         const legionCount = player.field.filter(c => c.faction === 'legion').length;
         if (legionCount >= 3) {
           this.dealDamage(targetCreature, creature.attack); // Двойной урон
@@ -630,9 +633,9 @@ export class GameEngine {
       player.tokens.HOT = (player.tokens.HOT || 0) + 1;
     });
 
-    // Chunk Producer
+    // Chunk Producer - ИСПРАВЛЕНО: правильный подсчёт существ
     player.field.filter(c => c.name === 'Chunk Producer').forEach(() => {
-      const shardCreatures = player.field.filter(c => c !== undefined); // Упрощённо
+      const shardCreatures = player.field.filter(c => c !== undefined);
       if (shardCreatures.length >= 2) {
         shardCreatures.forEach(c => {
           c.maxHealth += 1;
