@@ -207,26 +207,31 @@ export class GameBoard {
     return player.hero.mana >= cost;
   }
 
-  onHandCardClick(card, element) {
+onHandCardClick(card, element) {
     if (this.selectedCard === card) {
-      this.selectedCard = null;
-      element.classList.remove('selected');
-      return;
+        this.selectedCard = null;
+        element.classList.remove('selected');
+        return;
     }
 
     // Сброс предыдущего выбора
     document.querySelectorAll('.card.selected').forEach(el => el.classList.remove('selected'));
 
-    this.selectedCard = card;
-    element.classList.add('selected');
+    const needsTarget = card.type === 'spell' && card.onPlay &&
+        (card.onPlay.type === 'damage' || card.onPlay.type === 'freeze');
 
-    // Если заклинание требует цели — подсветить цели
-    if (card.type === 'spell' && card.onPlay) {
-      if (card.onPlay.type === 'damage' || card.onPlay.type === 'freeze') {
-        this.highlightValidTargets(card);
-      }
+    this.selectedCard = card;
+
+    // Существа, артефакты и заклинания без цели разыгрываются сразу
+    if (!needsTarget) {
+        this.playSelectedCard(null);
+        return;
     }
-  }
+
+    // Заклинания урона/заморозки требуют клика по цели
+    element.classList.add('selected');
+    this.highlightValidTargets(card);
+}
 
   onFriendlyCreatureClick(creature) {
     if (this.selectedFieldCreature === creature) {
